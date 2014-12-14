@@ -1,0 +1,33 @@
+Total names present in the input file is 32
+Total number of duplicate names present in the input file is 6
+
+
+
+**********File contents in level order***********
+
+praveen kumar chaubey
+pradeep chaubey
+sandeep chaubey
+chitra kala chaubey
+pranjal chaubey
+ritu
+shri niwas chaubey
+bhargavi
+pinky mittal
+prashant kumar
+sahil arora
+santosh chaubey
+sri nath chaubey
+anusha
+brajesh singh
+ojaswi
+shruti
+srikant chaubey
+aashruti gupta
+asish singh
+padmini samal
+varsha chandrashekhar
+ankur shukla
+varsha
+vidushi sharma
+tanvi arora

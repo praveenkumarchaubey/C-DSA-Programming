@@ -1,0 +1,9 @@
+kapoor	vowel_count: 3
+gaurav	vowel_count: 3
+c	vowel_count: 0
+varsha	vowel_count: 2
+chaubey	vowel_count: 3
+sandeep	vowel_count: 3
+chaubey	vowel_count: 3
+kumar	vowel_count: 2
+praveen	vowel_count: 3

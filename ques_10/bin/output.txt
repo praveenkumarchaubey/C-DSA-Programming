@@ -1,0 +1,33 @@
+Total names present in the input file is 32
+Total number of duplicate names present in the input file is 6
+
+
+
+**********File contents in sorted order***********
+
+aashruti gupta
+ankur shukla
+anusha
+asish singh
+bhargavi
+brajesh singh
+chitra kala chaubey
+ojaswi
+padmini samal
+pinky mittal
+pradeep chaubey
+pranjal chaubey
+prashant kumar
+praveen kumar chaubey
+ritu
+sahil arora
+sandeep chaubey
+santosh chaubey
+shri niwas chaubey
+shruti
+sri nath chaubey
+srikant chaubey
+tanvi arora
+varsha
+varsha chandrashekhar
+vidushi sharma
