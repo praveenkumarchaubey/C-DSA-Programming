@@ -1,48 +1,48 @@
 /********************************************************************************************
-*
-*       FILE NAME:      header.h
-*
-*       DESCRIPTION:    Contains header files, macros and function prototypes.
-*
-************************************************************************************************/
+ *
+ *       FILE NAME:      header.h
+ *
+ *       DESCRIPTION:    Contains header files, macros and function prototypes.
+ *
+ ************************************************************************************************/
 
 /*********************************************************************************************
-*                               HEADER FILES
-*
-**********************************************************************************************/
+ *                               HEADER FILES
+ *
+ **********************************************************************************************/
 
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 
 /*********************************************************************************************
-*                                       MACROS
-*
-************************************************************************************************/
+ *                                       MACROS
+ *
+ ************************************************************************************************/
 #define SUCCESS 1
 #define FAILURE 0
 #define MAX 30
 
 /*********************************************************************************************
-*                                       USER DEFINED DATA TYPES
-*
-************************************************************************************************/
+ *                                       USER DEFINED DATA TYPES
+ *
+ ************************************************************************************************/
 typedef struct bst{
-                                int info;
-                                struct bst *lchild; //pointer to the left child
-				struct bst *rchild; //pointer to the right child
-                           }tree_node;
+    int info;
+    struct bst *lchild; //pointer to the left child
+    struct bst *rchild; //pointer to the right child
+}tree_node;
 
 typedef struct queue{
-                                tree_node *info; //pointer to point the tree node
-				struct queue *link; //pointer to the next node
-                           }q_node;
+    tree_node *info; //pointer to point the tree node
+    struct queue *link; //pointer to the next node
+}q_node;
 
 /************************************************************************************************
-*
-*                               FUNCTION DECLARATIONS
-*
-**************************************************************************************************/
+ *
+ *                               FUNCTION DECLARATIONS
+ *
+ **************************************************************************************************/
 
 void pre_order(tree_node **root);
 void post_order(tree_node **root);
