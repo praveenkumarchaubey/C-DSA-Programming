@@ -4,26 +4,25 @@ CFLAGS = -c -Wall -g
 VFLAGS = --tool=memcheck --leak-check=full --show-reachable=yes
 
 #PATH DECLARATIONS
-BIN = ../bin/
-SRC = ../src/
-HDRS = ../include/
-OBJ = ../obj/
+BIN = ./
+DATA = ./data/
+SRC = ./src/
+HDRS = ./include/
+OBJ = ./
 
 $(BIN)exe : $(OBJ)main.o $(OBJ)func.o
 	$(CC) -o $(BIN)exe $(OBJ)main.o $(OBJ)func.o
 
 $(OBJ)main.o : $(SRC)main.c $(HDRS)header.h
 	$(CC) $(CFLAGS) $(SRC)main.c -I $(HDRS)
-	mv main.o $(OBJ)
 
 $(OBJ)func.o : $(SRC)func.c $(HDRS)header.h
 	$(CC) $(CFLAGS) $(SRC)func.c -I $(HDRS)
-	mv func.o $(OBJ)
 
 clean :
 	rm $(OBJ)*.o
 	rm $(BIN)exe
 
-valgrind : $(BIN)exe $(BIN)input1.txt $(BIN)input2.txt $(BIN)output.txt
-	valgrind $(VFLAGS) $(BIN)exe $(BIN)input1.txt $(BIN)input2.txt $(BIN)output.txt
+valgrind : $(BIN)exe $(DATA)input1.txt $(DATA)input2.txt $(DATA)output.txt
+	valgrind $(VFLAGS) $(BIN)exe $(DATA)input1.txt $(DATA)input2.txt $(DATA)output.txt
 
