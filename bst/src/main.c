@@ -1,91 +1,74 @@
-/********************************************************************************************
+/*********************************************************************************************************************************
+ *	FILE NAME : main.c
  *
- *       FILE NAME:      main.c
+ *	DESCRIPTION : contains main function for implementing bst
  *
- *       DESCRIPTION:    Contains the main program for implementong a BST list with add
- *                       and delete feature
- *
- ************************************************************************************************/
+ *	NAME		ID	DATE	REASON
+ *--------------------------------------------------------------------------------------------------------------------------------
+ * PRAVEEN CHAUBEY	38263	7/12/14	CDSA RE TEST
+ ************************************************************************************************************************************/
 
-/***********************************************************************************************
- *                       HEADER FILES
+/*********************************************************************************************************************************
+ *				HEADER FILES
  *
- *************************************************************************************************/
+ ***************************************************************************************************************************************/
 #include "header.h"
 
-/**********************************************************************************************
+/****************************************************************************************************************************************
+ *	FUNCTION NAME : main.c
  *
- *       FUNCTION NAME:  main.c
+ *	DESCRIPTION : main function for implementing bst
  *
- *       DESCRIPTION:    Contains the calls to various functions for implementing a BST
+ *	RETURN VALUE : SUCCESS
  *
- *       RETURN VALUES: SUCCESS or FAILURE
- *
- ************************************************************************************************/
-
-int main()
+ **************************************************************************************************************************************/
+int main(int argc, char *argv[])
 {
-    int choice;//For storing user choice
-    tree_node *root = NULL; //pointer to the root
-    do
+    if(NULL == argv[1])
     {
-        printf("***************************************************************************\n");
-        printf("\t\tMENUE\n");
-        printf("****************************************************************************\n");
-        printf("\t1.Create Tree\n");
-        printf("\t2.Search an Item\n");
-        printf("\t3.Pre Order Traversal\n");
-        printf("\t4.Post Order Traversal\n");
-        printf("\t5.Inorder Traversal\n");
-        printf("\t6.Level Order Traversal\n");
-        printf("\t7.Delete A Node\n");
-        printf("\t8.Quit\n\n");
-        printf("********************************************************************************\n\n");
-        printf("Enter your choice : ");
-        scanf("%d",&choice);
+        printf("please enter input file name\n");
+        exit(FAILURE);
+    }
+    if(NULL == argv[2])
+    {
+        printf("please enter output file name\n");
+        exit(FAILURE);
+    }
 
-        switch(choice)
+    FILE *fp1; //file pointer for input file
+    FILE *fp2; //file pointer for output file
+
+    file_open(&fp1, argv[1], "r");//opening input file in read mode
+    file_open(&fp2, argv[2], "w");//opening output file in write mode
+
+    char input[MAX]; //for storing input file names
+    node *root = NULL; //root node of tree
+    int count = 0; //name count
+    int duplicates = 0;
+
+    while(1)
+    {
+        memset(input, 0, MAX * sizeof(char));//initializing input
+        /*reading from the file*/
+        fgets(input, (MAX-1)*sizeof(char), fp1);
+        if(feof(fp1))
         {
-            case 1:
-                insert_node(&root);
-                break;
+            break;
+        }
+        insert_bst(&root, input, &duplicates);
+        count++;
+    }
 
-            case 2:
-                search(&root);
-                break;
+    printf("\n\n**********File contents in sorted order***********\n\n");
+    fprintf(fp2, "Total names present in the input file is %d\n", count);
+    fprintf(fp2, "Total number of duplicate names present in the input file is %d\n\n", duplicates);
+    fprintf(fp2, "\n\n**********File contents in sorted order***********\n\n");
+    insert_file(&root, &fp2);
 
-            case 3:
-                pre_order(&root);
-                break;
+    file_close(&fp1); //closing input file
+    file_close(&fp2); //closing output file
+    free_bst(&root);
 
-            case 4:
-                post_order(&root);
-                break;
+    return SUCCESS;
+}
 
-            case 5:
-                in_order(&root);
-                break;
-
-            case 6:
-                level_order(&root);
-                break;
-
-            case 7:
-                delete_node(&root);
-                break;
-
-            case 8:
-                break;
-
-            default:
-                printf("Wrong choice\n");
-
-        }/*End of switch */
-
-    }while(8!=choice); //End of while
-
-    free_tree(&root);
-
-    return 0;
-
-}//end of main

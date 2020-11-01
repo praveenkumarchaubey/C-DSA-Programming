@@ -1,540 +1,178 @@
-/********************************************************************************************
+/*********************************************************************************************************************************
+ *	FILE NAME : func.c
  *
- *       FILE NAME:      func.c
+ *	DESCRIPTION : contains functions definitions for bst implementation
  *
- *       DESCRIPTION:    Contains function definition for bst creation, traversal
- *                       and deletion
- *
- ************************************************************************************************/
+ *	NAME		ID	DATE	REASON
+ *--------------------------------------------------------------------------------------------------------------------------------
+ *PRAVEEN CHAUBEY	38263	7/12/14	CDSA RE TEST
+ ************************************************************************************************************************************/
 
-/***********************************************************************************************
- *                       HEADER FILES
+/*********************************************************************************************************************************
+ *				HEADER FILES
  *
- *************************************************************************************************/
+ ***************************************************************************************************************************************/
 #include "header.h"
 
-/********************************************************************************************
+/****************************************************************************************************************************************
+ *	FUNCTION NAME : file_open
  *
- *       FUNCTION  NAME: pre_order
+ *	DESCRIPTION : opens a file
  *
- *       DESCRIPTION:    traverses a tree recursively
+ *	RETURN VALUE : nothing
  *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void pre_order(tree_node **root)
+ **************************************************************************************************************************************/
+void file_open(FILE **fp, char *file_name, char *mode)
 {
-    tree_node *ptr;
-    ptr = *root;
-
-    if(ptr != NULL)
+    *fp = fopen(file_name, mode);
+    /*error handling*/
+    if(NULL == *fp)
     {
-        printf("%d",ptr->info);
-        printf("\n");
-        pre_order(&(ptr->lchild));
-        pre_order(&(ptr->rchild));
+        printf("error in opening file %s\n", file_name);
+        exit(FAILURE);
     }
     else
     {
-        return;
+        printf("file %s opened successfully\n", file_name);
     }
-
 }
 
-
-/********************************************************************************************
+/****************************************************************************************************************************************
+ *	FUNCTION NAME : file_close
  *
- *       FUNCTION  NAME: post_order
+ *	DESCRIPTION : closes a file
  *
- *       DESCRIPTION:    traverses a tree recursively
+ *	RETURN VALUE : nothing
  *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void post_order(tree_node **root)
+ **************************************************************************************************************************************/
+void file_close(FILE **fp)
 {
-    tree_node *ptr;
-    ptr = *root;
-    if(ptr!=NULL)
+    int n;
+    n = fclose(*fp);
+    /*error handling*/
+    if(n == EOF)
     {
-        post_order(&(ptr->lchild));
-        post_order(&(ptr->rchild));
-        printf("%d",ptr->info);
+        printf("error in closing the file\n");
     }
     else
     {
-        return;
-    }
-    printf("\n");
-
-}
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: in_order
- *
- *       DESCRIPTION:    traverses a tree recursively
- *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void in_order(tree_node **root)
-{
-    tree_node *ptr;
-    ptr = *root;
-    if(ptr!=NULL)
-    {
-        in_order(&(ptr->lchild));
-        printf("%d",ptr->info);
-        printf("\n");
-        in_order(&(ptr->rchild));
-    }
-    else
-    {
-        return;
+        printf("file closed successfully\n");
     }
 }
 
-
-/********************************************************************************************
+/****************************************************************************************************************************************
+ *	FUNCTION NAME : insert_bst
  *
- *       FUNCTION  NAME: insert_queue
+ *	DESCRIPTION : inserts a node into bst
  *
- *       DESCRIPTION:    insert an element in the queue from the rear position
+ *	RETURN VALUE : nothing
  *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void insert_queue(tree_node **ptr, q_node **front, q_node **rear)
+ **************************************************************************************************************************************/
+void insert_bst(node **root, char input[], int *duplicates)
 {
-    q_node *new;
-    new = (q_node *) malloc(sizeof(q_node));
-    if(new == NULL)
+    node *ptr = *root; //pointer for traversing
+    node *parent = NULL; // parent pointer
+    node *new; //new node
+    new = (node *) malloc(sizeof(node));
+
+    if(NULL != new)
     {
-        printf("Memory Not Available\n");
-        return;
-    }
-    else
-    {
-        if(*front == NULL)
-        {
-            new->info = *ptr;
-            new->link = NULL;
-            *front = new;
-            *rear = new;
-        }
-
-        else
-        {
-            new->info = *ptr;
-            new->link = NULL;
-            (*rear)->link = new;
-            *rear = new;
-
-        }
-    }
-}
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: del_queue
- *
- *       DESCRIPTION:    delete an element from the queue from the front position
- *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void del_queue(q_node **front, q_node **rear)
-{
-    q_node *temp;
-    if(*front == NULL)
-    {
-        printf("Queue Underflow\n");
-    }
-
-    else if((*front)->link == NULL)
-    {
-        temp = *front;
-        printf("%d",(*front)->info->info);
-        printf("\n");
-        *front = NULL;
-        *rear = NULL;
-        free(temp);
-    }
-
-    else
-    {
-        temp = *front;
-        printf("%d",(*front)->info->info);
-        printf("\n");
-        *front = (*front)->link;
-        free(temp);
-    }
-
-}
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: level_order
- *
- *       DESCRIPTION:    traverses the bst in level order
- *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void level_order(tree_node **root)
-{
-    tree_node *ptr;
-    q_node *front = NULL;
-    q_node *rear = NULL;
-
-    ptr = *root;
-
-    if(ptr == NULL)
-    {
-        printf("Tree is empty\n");
-    }
-
-    else
-    {
-        insert_queue(&ptr, &front, &rear);
-
-        while(front!=NULL) //till queue is not empty
-        {
-            ptr = front->info;
-            del_queue(&front, &rear);
-
-            if(ptr->lchild != NULL)
-                insert_queue(&(ptr->lchild), &front, &rear);
-
-            if(ptr->rchild != NULL)
-                insert_queue(&(ptr->rchild), &front, &rear);
-        }
-
-    }
-
-}
-/********************************************************************************************
- *
- *       FUNCTION  NAME: insert_node
- *
- *       DESCRIPTION:    insert element in the tree
- *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void insert_node(tree_node **root)
-{
-    tree_node *new; //new node to be inserted
-    tree_node *ptr; // ptr for traversing down the tree
-    tree_node *parent; //ptr for keeping the address or the parent node
-    new = (tree_node *) malloc(sizeof(tree_node));
-    ptr = *root;
-    parent = NULL;
-    if(new != NULL)
-    {
-        printf("please enter the data you want to insert:\n");
-        scanf("%d",&(new->info));
+        strcpy(new->info, input);
         new->lchild = NULL;
         new->rchild = NULL;
 
-        if(ptr == NULL)
+        if(NULL == ptr)
+        {
             *root = new;
+        }
         else
         {
-            while(ptr != NULL)
+
+            while(NULL != ptr)
             {
-                parent = ptr; //maintain a parent pointer
-                if(new->info < ptr->info)
+                parent = ptr;
+
+                if(strcmp(new->info, ptr->info) < 0)
+                {
                     ptr = ptr->lchild;
-
-                else if(new->info > ptr->info)
+                }
+                else if(strcmp(new->info, ptr->info) > 0)
+                {
                     ptr = ptr->rchild;
-
+                }
                 else
                 {
-                    printf("Duplicate Keys are not allowed\n");
+                    (*duplicates)++;
+                    free(new);
+                    new = NULL;
                     return;
                 }
             }
-
-
             if(ptr == NULL)
             {
-                if(new->info < parent->info)
+                if(strcmp(new->info, parent->info) < 0)
+                {
                     parent->lchild = new;
-
+                }
                 else
+                {
                     parent->rchild = new;
-            }
-        }
-    }
-
+                }
+            }//end of if
+        }//end of else
+    }//end of outer if
     else
     {
-        printf("Memory Not Available\n");
-        return;
+        printf("error in memory allocation\n");
+        exit(FAILURE);
     }
-
-
-}//end of insert fumction
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: delete_node
- *
- *       DESCRIPTION:    delete element from the tree
- *
- *       RETURN VALUE:   NOTHING
- *
- ************************************************************************************************/
-void delete_node(tree_node **root)
-{
-    int key;
-    printf("please enter the node to be deleted\n");
-    scanf("%d",&key);
-
-    tree_node *ptr = *root;
-    tree_node *parent = NULL;
-
-    if(ptr == NULL)
-    {
-        printf("Tree is empty\n");
-        return;
-    }
-
-    else
-    {
-        while(ptr != NULL)
-        {
-            if(key == ptr->info)
-            {
-                break;
-            }
-
-            parent = ptr;
-
-            if(key < ptr->info)
-            {
-                ptr = ptr->lchild;
-            }
-            else
-            {
-                ptr = ptr->rchild;
-            }
-        }
-
-        if(ptr == NULL)
-        {
-            printf("key %d not found\n", key);
-        }
-
-
-        else if(ptr->lchild != NULL && ptr->rchild != NULL)
-        {
-            case_a(root, ptr, parent);
-        }
-
-        else if(ptr->lchild == NULL)
-        {
-            case_b(root, ptr, parent);
-        }
-
-        else if(ptr->rchild == NULL)
-        {
-            case_b(root, ptr, parent);
-        }
-
-        else
-        {
-            case_c(root, ptr, parent);
-        }
-
-    }
-
-
 }
 
-/********************************************************************************************
+
+/****************************************************************************************************************************************
+ *	FUNCTION NAME : insert_file
  *
- *       FUNCTION  NAME: case_a
+ *	DESCRIPTION : displays the file contents in sorted order
  *
- *       DESCRIPTION:    if the node to be deleted has two childs
+ *	RETURN VALUE : nothing
  *
- *       RETURN VALUE:   Nothing
- *
- ************************************************************************************************/
-void case_a(tree_node **root, tree_node *ptr, tree_node *parent)
+ **************************************************************************************************************************************/
+void insert_file(node **root, FILE **fp)
 {
-    tree_node *succ;
-    tree_node *par_succ;
-
-    par_succ = ptr;
-    succ = ptr->rchild;
-
-    while(succ->lchild != NULL)
+    node *ptr = *root;
+    if(ptr != NULL)
     {
-        par_succ = succ;
-        succ = succ->lchild;
-    }
-
-    ptr->info = succ->info;
-    if(succ->rchild != NULL)
-    {
-        case_b(root, succ, par_succ);
+        insert_file(&(ptr->lchild), fp);
+        fprintf(*fp, "%s", ptr->info);
+        printf("%s", ptr->info);
+        insert_file(&(ptr->rchild), fp);
     }
     else
-    {
-        case_c(root, succ, par_succ);
-    }
-
-
-}
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: case_b
- *
- *       DESCRIPTION:    if the node to be deleted has only one child
- *
- *       RETURN VALUE:   Nothing
- *
- ************************************************************************************************/
-void case_b(tree_node **root, tree_node *ptr, tree_node *parent)
-{
-    tree_node *child;
-
-    if(ptr->lchild != NULL)
-    {
-        child = ptr->lchild;
-    }
-    else
-    {
-        child = ptr->rchild;
-    }
-
-    if(parent == NULL)
-    {
-        *root = child;
-    }
-
-    else if(ptr == parent->lchild)
-    {
-        parent->lchild = child;
-    }
-    else
-    {
-        parent->rchild = child;
-    }
-
-    free(ptr);
-
-}
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: case_c
- *
- *       DESCRIPTION:    if the node to be deleted has no child
- *
- *       RETURN VALUE:   Nothing
- *
- ************************************************************************************************/
-void case_c(tree_node **root, tree_node *ptr, tree_node *parent)
-{
-    if(parent == NULL)
-    {
-        *root = NULL;
-    }
-
-    if(ptr == parent->lchild)
-    {
-        parent->lchild = NULL;
-    }
-
-    else
-    {
-        parent->rchild = NULL;
-    }
-
-    free(ptr);
-
-}
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: search
- *
- *       DESCRIPTION:    searches  an element in the tree
- *
- *       RETURN VALUE:   Nothing
- *
- ************************************************************************************************/
-void search(tree_node **root)
-{
-    int key;
-    printf("Please enter an item to be searched\n");
-    scanf("%d",&key);
-
-    tree_node *ptr;
-    ptr = *root;
-
-    while(ptr != NULL)
-    {
-        if(key < ptr->info)
-        {
-            ptr = ptr->lchild;
-        }
-
-
-        else if(key > ptr->info)
-        {
-            ptr = ptr->rchild;
-        }
-
-        else
-        {
-            printf("Key Found\n");
-            return;
-        }
-
-    }
-
-    if(ptr==NULL)
-    {
-        printf("Key Not found");
-    }
-
-}//end of search
-
-/********************************************************************************************
- *
- *       FUNCTION  NAME: Free_tree
- *
- *       DESCRIPTION:    Free The memory allocated dynamically
- *
- *       RETURN VALUE:   Nothing
- *
- ************************************************************************************************/
-
-
-void free_tree(tree_node **root)
-{
-    tree_node *ptr;
-    ptr = *root;
-    if(ptr == NULL)
     {
         return;
     }
+}
 
-    else
-    {
-        free_tree(&(ptr->lchild));
-        free_tree(&(ptr->rchild));
+/****************************************************************************************************************************************
+ *	FUNCTION NAME : free_bst
+ *
+ *	DESCRIPTION : free the bst
+ *
+ *	RETURN VALUE : nothing
+ *
+ **************************************************************************************************************************************/
+void free_bst(node **root)
+{
+    node *ptr = *root;
+    if(ptr != NULL)
+    {	
+        free_bst(&(ptr->lchild));
+        free_bst(&(ptr->rchild));
         free(ptr);
-        root = NULL;
+        ptr = NULL;
     }
-
+    else
+    {
+        return;
+    }
 }
-
-
